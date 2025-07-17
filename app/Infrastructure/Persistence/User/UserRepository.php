@@ -18,7 +18,7 @@ class UserRepository implements UserRepositoryInterface
      * @param User $user
      * @return void
      */
-    public function save(User $user): void
+    public function save(User $user): bool
     {
         // Prepare data for insertion
         $data = [
@@ -31,6 +31,6 @@ class UserRepository implements UserRepositoryInterface
 
         $strategy = StrategyFactory::make('insert');
         // Ejecuta la estrategia con los datos y la tabla 'users'
-        $strategy->execute($data, 'users');
+        return $strategy->execute($data, 'users');
     }
 }

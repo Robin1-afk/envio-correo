@@ -4,6 +4,7 @@ namespace App\Application\User\UseCases;
 
 use App\Domain\User\Entities\User;
 use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Application\Shared\Exceptions\ApplicationException;
 
 /**
  * Class RegisterUserUseCase
@@ -30,6 +31,10 @@ class RegisterUserUseCase
         // Crea la entidad (representa el dominio)
         $user = new User($name, $email, bcrypt($password));
         // Guarda el usuario mediante el repositorio (aplicación desacoplada de la infra)
-        $this->repository->save($user);
+        $success = $this->repository->save($user);
+
+        if (!$success) {
+            throw new ApplicationException("No se pudo registrar el usuario.");
+        }
     }
 }

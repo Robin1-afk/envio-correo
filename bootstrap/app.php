@@ -18,8 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Manejo de excepciones personalizadas
-        $exceptions->renderable(
-            app(App\Exceptions\Handler::class)
-        );
+        $exceptions->renderable(function (Throwable $e, $request) {
+                return response()->json([
+                    'message' => 'Error interno del servidor',
+                    'details' => $e->getMessage(),
+                ], 500);
+        });
     })->create();
